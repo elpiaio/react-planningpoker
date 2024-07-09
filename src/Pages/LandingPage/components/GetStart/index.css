@@ -1,0 +1,71 @@
+.getStart-root {
+    width: 100%;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'inter' sans-serif;
+    font-size: larger;
+    font-weight: 900;
+}
+
+.getStart-root img {
+    max-height: 450px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+
+}
+
+/* CARD OF UIVERSE.IO*/
+
+.cardGetStart {
+    width: 400px;
+    height: 560px;
+    background-image: linear-gradient(163deg, #9700d2 0%, #513354 100%);
+    border-radius: 20px;
+    transition: all .3s;
+}
+
+.cardGetStart img{
+    height: 300px;
+}
+
+.card2 {
+    width: 400px;
+    height: 560px;
+    background-color: #1a1a1a;
+    border-radius: 18px;
+    transition: all .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card2:hover {
+    transform: scale(0.98);
+    border-radius: 20px;
+}
+
+.cardGetStart:hover {
+    box-shadow: 0px 0px 30px 1px rgba(242, 0, 255, 0.3);
+}
+
+/* END */
+
+.footer {
+    display: flex;
+    align-items: center;
+    height: 300px;
+    width: 100%;
+    font-size: 36px;
+    justify-content: center;
+    font-weight: bolder;
+    color: #9700d2;
+}

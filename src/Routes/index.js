@@ -1,10 +1,10 @@
 import { Routes as RoutesComponent, Route } from "react-router-dom";
-import LoginComponents from "../Pages/Login";
+import LandingPage from "../Pages/LandingPage/index.jsx";
 
 export const Routes = () => {
     return (
         <RoutesComponent>
-            <Route path="/Home" />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/CreateRoom" />
             <Route path="/CreateAccount" />
             <Route path="/Login" />
