@@ -1,14 +1,16 @@
 import React from "react";
 import './index.css';
+import { Router, useNavigate } from "react-router-dom";
 
 const Header = function () {
+    const navigate = useNavigate();
 
-    function navigateLogin () {
-        window.location.href = "Login"
+    function navigateLogin() {
+        navigate("/Login");
     }
 
-    function navigateCreateAccount () {
-        window.location.href = "CreateAccount"
+    function navigateCreateAccount() {
+        navigate("/CreateAccount");
     }
 
     return (
