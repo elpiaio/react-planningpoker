@@ -5,6 +5,7 @@ import LoginButton from "../../components/LoginButton/index.tsx";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import GoogleButton from "../../components/GoogleButton/index.tsx";
 import LoginSquare from "../../components/LoginSquare/index.tsx";
+import { makeLogin } from "../../Api/use-cases/use-login.ts";
 
 const Login = function () {
     const [email, setEmail] = useState("")
@@ -13,12 +14,10 @@ const Login = function () {
 
     function handleEmailChange(e) {
         setEmail(e.target.value)
-        console.log(email)
     }
 
     function handlePasswordChange(e) {
         setPassword(e.target.value)
-        console.log(password)
     }
 
     function handleShowPassword() {
@@ -27,6 +26,11 @@ const Login = function () {
         } else {
             setShowPassword("password")
         }
+    }
+
+    const handleClick = async () => {
+        const result = await makeLogin({ Email: email, Password: password })
+        console.log(result)
     }
 
     return (
@@ -42,13 +46,12 @@ const Login = function () {
                     <a href="" className="recovery-password-label">Esqueceu sua senha?</a>
                 </div>
 
-                
-                <LoginButton text="Login" />
+                <LoginButton text="Login" handle={handleClick} />
                 <a href="./CreateAccount">Não possui uma conta? cadastre-se</a>
-                <GoogleButton/>
+                <GoogleButton />
             </div>
 
-            <LoginSquare/>
+            <LoginSquare />
         </div>
     )
 }

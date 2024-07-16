@@ -22,7 +22,7 @@ const Header = function () {
                 <div className="buttons-container">
                     <a href="https://tunad.io/" target="_blank">Tunad.io</a>
                     <a href="https://www.linkedin.com/company/tunadplatform/mycompany/" target="_blank">Linkedin</a>
-                    <a onClick={navigateLogin} className="login-button">Login</a>
+                    <a onClick={navigateLogin} className="landingpage-login-button">Login</a>
                     <button onClick={navigateCreateAccount} className="register-button">Cadastre-se</button>
                 </div>
             </div>
