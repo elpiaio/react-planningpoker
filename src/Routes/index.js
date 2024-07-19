@@ -7,7 +7,7 @@ export const Routes = () => {
     return (
         <RoutesComponent>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/CreateRoom" />
+            <Route path="/Home" />
             <Route path="/Login" element={<Login />} />
             <Route path="/CreateAccount" element={<Register />} />
             <Route path="/Lobby" />

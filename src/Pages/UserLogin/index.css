@@ -16,12 +16,12 @@
     flex: 1;
 }
 
-.login-contents h1{
+.login-contents h1 {
     margin-bottom: 40px;
     color: #992FEB;
 }
 
-.login-contents a{
+.login-contents a {
     color: #992FEB;
     text-decoration: none;
 }
@@ -41,6 +41,13 @@
 .input-password-container {
     display: flex;
     position: relative;
+    flex-direction: column
+}
+
+.error-label {
+    font-size: 12px;
+    color: rgb(255, 109, 109);
+    margin-bottom: -25px;
 }
 
 .show-password-button {
@@ -57,5 +64,5 @@
 }
 
 .recovery-password-label {
-font-size: 12px !important;
+    font-size: 12px !important;
 }

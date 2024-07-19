@@ -1,4 +1,5 @@
 import { httpHandler } from "../Handler.ts";
+import { sweetalert2 } from "../../use-cases/use-sweetalert.ts"
 
 type useLoginTypes = {
     Email: string;
@@ -7,7 +8,6 @@ type useLoginTypes = {
 
 export async function makeLogin({ Password, Email }: useLoginTypes) {
     const handler = httpHandler()
-
     try {
         const response = await handler.post("user/login", {
             Password,
@@ -16,6 +16,7 @@ export async function makeLogin({ Password, Email }: useLoginTypes) {
 
         return response.data
     } catch (error) {
-        console.log(error.response.data.message)
+        sweetalert2.alertSweetalert("Error", error.response.data.message, "error")
+        return null
     }
 }
