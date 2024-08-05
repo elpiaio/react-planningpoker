@@ -6,7 +6,7 @@ import GoogleButton from "../../components/GoogleButton/index.tsx";
 import LoginSquare from "../../components/LoginSquare/index.tsx";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { makeLogin } from "../../Api/use-cases/use-login.ts";
-import { sweetalert2 } from "../../use-cases/use-sweetalert.ts"
+import { sweetAlertHub } from "../../use-cases/use-sweetalert.ts"
 import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = function () {
@@ -16,6 +16,7 @@ const Login = function () {
 
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [pristinePassword, setPristinePassword] = useState(true)
 
     const navigate = useNavigate()
 
@@ -25,7 +26,15 @@ const Login = function () {
 
     function handlePasswordChange(e) {
         setPassword(e.target.value);
+        setPristinePassword(false)
     }
+
+    useEffect(() => {
+        if (!pristinePassword) {
+            if (password.length < 1) return setPasswordError("Não pode ser nulo");
+            setPasswordError("")
+        }
+    }, [password])
 
     function handleShowPassword() {
         if (showPassword === "password") {
@@ -39,6 +48,7 @@ const Login = function () {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!re.test(String(email))) return setEmailError("Email não válido!")
+        if (password.length < 1) return setPasswordError("Não pode ser nulo");
         setEmailError("")
 
         const result = await makeLogin({ Email: email, Password: password })
@@ -56,7 +66,7 @@ const Login = function () {
                     <p className="error-label">{emailError}</p>
                     <LoginInput placeholder="Email" handle={handleEmailChange} type={"email"} />
                     <div className="input-password-container">
-                        <p className="error-label">{passwordError}</p>
+                        <p className="error-label no-margin">{passwordError}</p>
                         <LoginInput placeholder="Password" handle={handlePasswordChange} type={showPassword} />
                         <button className="show-password-button" onClick={handleShowPassword}>
                             {showPassword === "password" ? <EyeSlash color="white" size={20} /> : <Eye color="white" size={20} />}

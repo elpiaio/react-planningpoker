@@ -50,6 +50,10 @@
     margin-bottom: -25px;
 }
 
+.no-margin{
+    margin-bottom: 0px;
+}
+
 .show-password-button {
     position: absolute;
     display: flex;

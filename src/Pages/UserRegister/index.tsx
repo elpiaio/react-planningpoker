@@ -7,7 +7,7 @@ import GoogleButton from "../../components/GoogleButton/index.tsx";
 import LoginSquare from "../../components/LoginSquare/index.tsx";
 
 import { makeLogin } from "../../Api/use-cases/use-login.ts";
-import { sweetalert2 } from "../../use-cases/use-sweetalert.ts";
+import { sweetAlertHub } from "../../use-cases/use-sweetalert.ts";
 
 const Register = function () {
     const [name, setName] = useState("")
@@ -74,7 +74,9 @@ const Register = function () {
         if (!re.test(String(email))) return setEmailError("Email não válido!")
         setEmailError("")
 
-        if (password !== confirmPassword) { return sweetalert2.alertSweetalert("Erro!", "Senhas não conferem!", "error") }
+        if (password !== confirmPassword) { return sweetAlertHub.alertSweetalert("Erro!", "Senhas não conferem!", "error") }
+
+        alert("valido")
 
         // const result = await makeLogin({ Email: email, Password: password })
         //  localStorage.setItem("userId", JSON.stringify(result))

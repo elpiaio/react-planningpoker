@@ -1,9 +1,53 @@
-import React, { useState } from "react";
-import "./index.css"
+import React, { useEffect } from "react";
+import jwt_decode from 'jwt-decode';
+import { sweetAlertHub } from "../../use-cases/use-sweetalert";
+import { httpHandler } from '../../Api/Handler';
+import "./index.css";
 
-const GoogleButton = function () {
+const GoogleButton = () => {
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        document.body.appendChild(script);
+
+        script.onload = () => {
+            window.google.accounts.id.initialize({
+                client_id: '745509205468-12llooertqv2a7ht7cipi09si4b53m1g.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+            });
+        };
+    }, []);
+
+    const handleCredentialResponse = (response) => {
+        const data = jwt_decode(response.credential);
+
+        if (!data) {
+            sweetAlertHub.errorMessage('An error occurred with the API!');
+            return;
+        }
+
+        const password = data.sub + 'Google';
+        const body = {
+            Name: data.name,
+            Email: data.email,
+            Password: password,
+        };
+
+        if (data.name.length < 16) {
+            continueWithGoogle(body);
+        } else {
+            body.Name = data.given_name;
+            continueWithGoogle(body);
+        }
+    };
+
+    const handleGoogleLogin = () => {
+        window.google.accounts.id.prompt();
+    };
+
     return (
-        <button className="button">
+        <button className="button" onClick={handleGoogleLogin}>
             <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" className="svg">
                 <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027" className="blue"></path>
                 <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1" className="green"></path>
@@ -12,7 +56,51 @@ const GoogleButton = function () {
             </svg>
             <span className="text">Continue with Google</span>
         </button>
-    )
-}
+    );
+};
 
 export default GoogleButton;
+
+async function continueWithGoogle(body) {
+    try {
+        const handler = httpHandler();
+
+        const user = await reqGetUserEmail(body.Email, handler);
+        if (user && user.Email && user.Name && user.id) {
+            localStorage.setItem('userId', JSON.stringify(user));
+            window.location.href = 'Home.html';
+        } else {
+            const result = await createUserReq(body, handler);
+
+            if (!result || !result.Name || !result.Email || !result.id) {
+                return sweetAlertHub.errorMessage('Validation error occurred in the API');
+            }
+
+            localStorage.setItem('userId', JSON.stringify(result));
+            window.location.href = 'Home.html';
+        }
+    } catch (error) {
+        console.log(error);
+        sweetAlertHub.errorMessage('Validation error occurred in the API');
+    }
+}
+
+async function reqGetUserEmail(email, handler) {
+    try {
+        const response = await handler.get(`user/email/${email}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user by email:', error);
+        return null;
+    }
+}
+
+async function createUserReq(body, handler) {
+    try {
+        const response = await handler.post('user', body);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating user:', error);
+        return null;
+    }
+}

@@ -1,7 +1,8 @@
 import Swal from 'sweetalert2';
 
-export const sweetalert2 = {
+export const sweetAlertHub = {
     alertSweetalert: alertSweetalert,
+    errorMessage: errorMessage
 }
 
 function alertSweetalert(title, text, icon) {
@@ -15,3 +16,13 @@ function alertSweetalert(title, text, icon) {
         }
     });
 }
+
+function errorMessage(description) {
+    Swal.fire({
+        title: "Error",
+        text: description,
+        icon: "error",
+        confirmButtonColor: "#000000",
+    });
+}
+
