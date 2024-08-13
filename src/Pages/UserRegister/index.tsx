@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import LoginInput from "../../components/LoginInput/index.tsx";
 import LoginButton from "../../components/LoginButton/index.tsx";
-import { Eye, EyeSlash } from "@phosphor-icons/react";
 import GoogleButton from "../../components/GoogleButton/index.tsx";
 import LoginSquare from "../../components/LoginSquare/index.tsx";
 
@@ -46,8 +45,6 @@ const Register = function () {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!re.test(String(email))) return setEmailError("Email não válido!")
             setEmailError("")
-
-            
         }
     }, [email])
 
@@ -69,12 +66,14 @@ const Register = function () {
     }
 
     const handleClick = async () => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regexPaswword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
 
-        if (!re.test(String(email))) return setEmailError("Email não válido!")
+        if (!regexPaswword.test(String(password))) return;  
+        if (!regexEmail.test(String(email))) return setEmailError("Email não válido!")
         setEmailError("")
 
-        if (password !== confirmPassword) { return sweetAlertHub.alertSweetalert("Erro!", "Senhas não conferem!", "error") }
+        if (password !== confirmPassword) return sweetAlertHub.alertSweetalert("Erro!", "Senhas não conferem!", "error");
 
         alert("valido")
 
