@@ -1,32 +1,35 @@
 import React, { useEffect } from "react";
 import jwt_decode from 'jwt-decode';
-import { sweetAlertHub } from "../../use-cases/use-sweetalert";
-import { httpHandler } from '../../Api/Handler';
+import { sweetAlertHub } from "../../use-cases/use-sweetalert.ts";
+import { httpHandler } from '../../Api/Handler.ts';
 import "./index.css";
+
+declare global {
+    interface Window {
+        google: any;
+    }
+}
+
+interface GoogleUserData {
+    sub: string;
+    name: string;
+    email: string;
+    given_name: string;
+}
 
 const GoogleButton = () => {
     useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        document.body.appendChild(script);
-
-        script.onload = () => {
-            window.google.accounts.id.initialize({
-                client_id: '745509205468-12llooertqv2a7ht7cipi09si4b53m1g.apps.googleusercontent.com',
-                callback: handleCredentialResponse,
-            });
-        };
+        window.google.accounts.id.initialize({
+            client_id: '558629785858-1koj1ntoa8j6fniberhl5fq4mokf1cu9.apps.googleusercontent.com',
+            callback: handleCredentialResponse,
+        });
     }, []);
 
     const handleCredentialResponse = (response) => {
-        const data = jwt_decode(response.credential);
+        const data: GoogleUserData = jwt_decode(response.credential);
 
-        if (!data) {
-            sweetAlertHub.errorMessage('An error occurred with the API!');
-            return;
-        }
-
+        if (!data) return sweetAlertHub.errorMessage('An error occurred with the API!');
+           
         const password = data.sub + 'Google';
         const body = {
             Name: data.name,
@@ -66,6 +69,7 @@ async function continueWithGoogle(body) {
         const handler = httpHandler();
 
         const user = await reqGetUserEmail(body.Email, handler);
+        
         if (user && user.Email && user.Name && user.id) {
             localStorage.setItem('userId', JSON.stringify(user));
             window.location.href = 'Home.html';
