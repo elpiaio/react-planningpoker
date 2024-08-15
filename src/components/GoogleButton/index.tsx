@@ -71,7 +71,7 @@ async function continueWithGoogle(body) {
 
         if (user && user.Email && user.Name && user.id) {
             localStorage.setItem('userId', JSON.stringify(user));
-            window.location.href = 'Home.html';
+            window.location.href = 'Home';
         } else {
             const result = await createUserReq(body);
 

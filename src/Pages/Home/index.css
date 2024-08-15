@@ -1,0 +1,49 @@
+.home-root {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.aaa {
+    color: azure;
+}
+
+.home-rooms-root {
+    margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 50%;
+    height: auto;
+    padding: 0 20px;
+}
+
+.home-rooms-root>div {
+    margin-bottom: 100px;
+}
+
+/* Responsive cards */
+
+@media (max-width: 900px) {
+    .home-rooms-root {
+        flex: 1 1 calc(50% - 40px);
+        max-width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 600px) {
+    .home-rooms-root {
+        min-width: 100%;
+    }
+}
+
+.footer {
+    width: 100%;
+    height: 70px;
+}

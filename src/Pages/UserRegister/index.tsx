@@ -5,10 +5,12 @@ import LoginButton from "../../components/LoginButton/index.tsx";
 import GoogleButton from "../../components/GoogleButton/index.tsx";
 import LoginSquare from "../../components/LoginSquare/index.tsx";
 
-import { makeLogin } from "../../Api/use-cases/use-login.ts";
 import { sweetAlertHub } from "../../use-cases/use-sweetalert.ts";
+import { createUserReq } from "../../Api/use-cases/use-createAccount.ts";
+import { useNavigate } from "react-router-dom";
 
 const Register = function () {
+    const navigate = useNavigate()
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -16,9 +18,11 @@ const Register = function () {
 
     const [pristinePassword, setPristinePassword] = useState(true)
     const [pristineEmail, setPristineEmail] = useState(true)
+    const [pristineName, setPristineName] = useState(true)
 
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [nameError, setNameError] = useState("");
 
     useEffect(() => {
         if (!pristinePassword) {
@@ -48,7 +52,16 @@ const Register = function () {
         }
     }, [email])
 
+    useEffect(() => {
+        if (!pristineName) {
+            if (name.length > 16) return setNameError("O nome não pode ter mais de 16 caracteres!")
+            if (!name) return setNameError("O nome não pode ser nulo!")
+            setNameError("")
+        }
+    }, [name])
+
     function handleNameChange(e) {
+        setPristineName(false)
         setName(e.target.value)
     }
 
@@ -69,16 +82,21 @@ const Register = function () {
         const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const regexPaswword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/;
 
-        if (!regexPaswword.test(String(password))) return;  
+        if (name.length > 16) return setNameError("O nome não pode ter mais de 16 caracteres!")
+        if (!name) return setNameError("O nome não pode ser nulo!")
+
         if (!regexEmail.test(String(email))) return setEmailError("Email não válido!")
         setEmailError("")
-
+        if (!regexPaswword.test(String(password))) return;
         if (password !== confirmPassword) return sweetAlertHub.alertSweetalert("Erro!", "Senhas não conferem!", "error");
 
-        alert("valido")
+        const result = await createUserReq({ Name: name, Email: email, Password: password })
 
-        // const result = await makeLogin({ Email: email, Password: password })
-        //  localStorage.setItem("userId", JSON.stringify(result))
+        if (result.response.data.message == 'User with this email already exists') return sweetAlertHub.alertSweetalert("Erro!", "User já existe!", "error");
+        if (result.name == 'AxiosError') return sweetAlertHub.alertSweetalert("Erro!", "Um erro ocorreu!", "error");
+
+        localStorage.setItem("userId", JSON.stringify(result))
+        navigate("/Home");
     }
 
     return (
@@ -86,6 +104,7 @@ const Register = function () {
             <div className="login-contents">
                 <h1>Cadastre-se</h1>
                 <div className="login-inputs">
+                    <p className="error-label">{nameError}</p>
                     <LoginInput placeholder="Name" handle={handleNameChange} type={"text"} />
                     <p className="error-label">{emailError}</p>
                     <LoginInput placeholder="Email" handle={handleEmailChange} type={"email"} />
@@ -96,9 +115,8 @@ const Register = function () {
 
                 <LoginButton text="Register" handle={handleClick} />
                 <a href="./Login">Já possui uma conta? Login</a>
-                <GoogleButton />
+                <GoogleButton />    
             </div>
-
             <LoginSquare />
         </div>
     )

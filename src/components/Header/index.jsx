@@ -14,7 +14,7 @@ const Header = function () {
     }
 
     return (
-        <div className="header-root">
+        <header className="header-root">
             <div className="header">
                 <div className="img-container">
                     <img src='/images/logo1.jfif' alt="logo" />
@@ -26,7 +26,7 @@ const Header = function () {
                     <button onClick={navigateCreateAccount} className="register-button">Cadastre-se</button>
                 </div>
             </div>
-        </div>
+        </header>
     )
 }
 
