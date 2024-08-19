@@ -43,6 +43,10 @@
 }
 
 .user-container {
+    display: flex;
+    color: white;
+    align-items: center;
+    gap: 10px;
     position: relative;
     transition: all 0.5s;
 }

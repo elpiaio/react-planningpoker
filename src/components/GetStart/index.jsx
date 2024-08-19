@@ -5,7 +5,7 @@ const GetStart = function () {
     return (
         <div className="getStart-root">
 
-            <div class="footer">
+            <div class="cardGetStart-title">
                 <h1>Avalie as tarefas com precisão!</h1>
             </div>
 

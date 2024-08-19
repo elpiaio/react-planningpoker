@@ -3,7 +3,7 @@ import './index.css';
 
 import { User, SignOut } from "@phosphor-icons/react";
 
-const HomeHeader = function () {
+const HomeHeader = function ({ userName }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -11,7 +11,7 @@ const HomeHeader = function () {
     }
 
     const removeAccount = () => {
-        
+
     }
 
     return (
@@ -21,6 +21,7 @@ const HomeHeader = function () {
                     <img src='/images/logo1.jfif' alt="logo" />
                 </div>
                 <div className="user-container">
+                    <h3>{userName}</h3>
                     <User
                         className="userLogo"
                         size={22}
