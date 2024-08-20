@@ -47,42 +47,39 @@ const Home = () => {
                     alert("You are not logged in correctly!");
                     return window.location.href = `/Login`;
                 }
+
+                const userRooms = await fetchRooms(localUser.id);
+
+                setRooms(userRooms)
             } catch (error) {
                 console.error(error);
             }
         };
-
         fetchUser();
     }, []);
 
-    useEffect(() => {
-        const fetchRooms = async () => {
-            if (!user) return;
 
-            try {
-                const result = await Handler.get(`user/rooms/${user.id}`);
-                const roomsData = result.data.map((userRoom: any) => userRoom.room);
-                setRooms(roomsData);
-                console.log(roomsData)
-            } catch (error) {
-                console.error("Error fetching rooms:", error);
-            }
-        };
-
-        fetchRooms();
-    }, []);
+    const enterOnRoom = (room: Room) => {
+        try {
+            console.log(room)
+        } catch (error) {
+            console.error("Error fetching rooms:", error);
+        }
+    };
 
     return (
         <div className="home-root">
-            <HomeHeader userName={user?.Name}/>
+            <HomeHeader userName={user?.Name} />
             <HomeBanner />
             <PersonalizedTitle text={"Rooms"} />
             <div className="home-rooms-root">
                 {rooms.map((room, index) => (
                     <HomeRoomCards
                         key={index}
+                        roomObject={room}
                         roomName={room.roomName}
                         createdAt={room.createdAt}
+                        Handler={enterOnRoom}
                     />
                 ))}
             </div>
@@ -93,3 +90,14 @@ const Home = () => {
 };
 
 export default Home;
+
+const fetchRooms = async (userId) => {
+    try {
+        const result = await Handler.get(`user/rooms/${userId}`);
+        const roomsData = result.data.map((userRoom: any) => userRoom.room);
+
+        return roomsData
+    } catch (error) {
+        console.error("Error fetching rooms:", error);
+    }
+};

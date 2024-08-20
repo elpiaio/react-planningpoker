@@ -41,6 +41,11 @@
     .home-rooms-root {
         width: 100%;
     }
+
+    .mini-menu {
+        top: 100%;
+        left: 66%;
+    }
 }
 
 @media (min-width: 1100px) {

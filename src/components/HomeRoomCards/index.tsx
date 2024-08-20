@@ -1,9 +1,9 @@
 import React from "react";
 import './index.css';
 
-const HomeRoomCards = ({ roomName, createdAt }) => {
+const HomeRoomCards = ({ roomName, roomObject, createdAt, Handler }) => {
     return (
-        <div className="container noselect">
+        <div className="container noselect" onClick={() => { Handler(roomObject) }}>
             <div className="canvas">
                 <div className="tracker tr-1"></div>
                 <div className="tracker tr-2"></div>
